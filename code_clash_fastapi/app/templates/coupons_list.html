@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Coupons - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header flex-between">
+  <h1>Coupons</h1>
+  <a href="/admin/coupons/new" class="btn btn-primary">Add New Coupon</a>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Code</th>
+      <th>Discount</th>
+      <th>Expires At (UTC)</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in coupons %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td><strong>{{ c.code }}</strong></td>
+      <td>{{ c.percent_off }}%</td>
+      <td>{{ c.expires_at.strftime('%Y-%m-%d %H:%M:%S UTC') if c.expires_at else '' }}</td>
+      <td>
+        {% if c.active %}
+        <span class="badge badge-success">Active</span>
+        {% else %}
+        <span class="badge badge-danger">Inactive</span>
+        {% endif %}
+      </td>
+      <td>
+        <a href="/admin/coupons/{{ c.id }}/edit" class="btn btn-small">Edit</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="text-center">No coupons registered.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

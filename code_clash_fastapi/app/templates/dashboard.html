@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Dashboard</h1>
+</div>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Products</div>
+    <div class="stat-value" data-testid="stat-products">{{ products_count }}</div>
+    <div class="stat-action"><a href="/admin/products">View products &rarr;</a></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Orders</div>
+    <div class="stat-value" data-testid="stat-orders">{{ orders_count }}</div>
+    <div class="stat-action"><a href="/admin/orders">View orders &rarr;</a></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Payments</div>
+    <div class="stat-value" data-testid="stat-payments">{{ payments_count }}</div>
+    <div class="stat-action"><a href="/admin/payments">View payments &rarr;</a></div>
+  </div>
+</div>
+{% endblock %}

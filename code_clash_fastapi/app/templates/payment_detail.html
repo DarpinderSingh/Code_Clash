@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Payment #{{ payment.id }} - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header flex-between">
+  <h1>Payment #{{ payment.id }}</h1>
+  <div>
+    <a href="/admin/payments" class="btn btn-secondary">&larr; Back to Payments</a>
+  </div>
+</div>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="card" style="max-width: 600px;">
+  <h2>Payment Details</h2>
+  <table class="detail-table">
+    <tr>
+      <th>Payment ID:</th>
+      <td><strong>#{{ payment.id }}</strong></td>
+    </tr>
+    <tr>
+      <th>Order ID:</th>
+      <td><a href="/admin/orders/{{ payment.order_id }}">#{{ payment.order_id }}</a></td>
+    </tr>
+    <tr>
+      <th>Idempotency Key:</th>
+      <td><code>{{ payment.idempotency_key }}</code></td>
+    </tr>
+    <tr>
+      <th>Payment Status:</th>
+      <td><span class="badge" data-testid="payment-status">{{ payment.status }}</span></td>
+    </tr>
+    <tr>
+      <th>Amount:</th>
+      <td><strong>{{ payment.amount_paise }}</strong> paise</td>
+    </tr>
+    <tr>
+      <th>Refunded Amount:</th>
+      <td><strong data-testid="refund-amount">{{ payment.refunded_paise }}</strong> paise</td>
+    </tr>
+    <tr>
+      <th>Confirmed At (UTC):</th>
+      <td>{{ payment.confirmed_at.strftime('%Y-%m-%d %H:%M:%S UTC') if payment.confirmed_at else '' }}</td>
+    </tr>
+  </table>
+
+  <div class="actions-panel" style="margin-top: 1.5rem;">
+    {% if payment.status == 'PAID' %}
+    <form method="POST" action="/admin/payments/refund">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <input type="hidden" name="order_id" value="{{ payment.order_id }}">
+      <button type="submit" class="btn btn-warning" data-testid="payment-refund" onclick="return confirm('Refund this payment?');">
+        Refund Payment
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

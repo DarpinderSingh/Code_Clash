@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}FaultLine Commerce Admin{% endblock %}</title>
+  <link rel="stylesheet" href="/static/admin.css">
+</head>
+<body>
+  <header class="admin-header">
+    <div class="header-content">
+      <div class="logo">
+        <a href="/admin">FaultLine Admin</a>
+      </div>
+      {% if current_user %}
+      <nav class="admin-nav">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/products">Products</a>
+        <a href="/admin/coupons">Coupons</a>
+        <a href="/admin/carts">Carts</a>
+        <a href="/admin/orders">Orders</a>
+        <a href="/admin/payments">Payments</a>
+        <a href="/admin/audit-log">Audit Log</a>
+      </nav>
+      <div class="user-menu">
+        <span class="user-email">{{ current_user.email }}</span>
+        <form method="POST" action="/admin/logout" style="display:inline;">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" class="btn btn-secondary" data-testid="admin-logout">Logout</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+
+  <main class="admin-main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="/static/admin.js"></script>
+</body>
+</html>
