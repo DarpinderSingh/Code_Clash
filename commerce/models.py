@@ -7,10 +7,6 @@ from django.db.models import F, Q
 from django.utils import timezone
 
 
-# ==========================================================
-# PRODUCT
-# ==========================================================
-
 class Product(models.Model):
     name = models.CharField(max_length=200)
 
@@ -49,9 +45,6 @@ class Product(models.Model):
         return f"{self.name} ({self.sku})"
 
 
-# ==========================================================
-# CART ITEM
-# ==========================================================
 
 class CartItem(models.Model):
     customer = models.ForeignKey(
@@ -91,9 +84,6 @@ class CartItem(models.Model):
         return f"{self.customer_id}: {self.product.name} x {self.quantity}"
 
 
-# ==========================================================
-# COUPON
-# ==========================================================
 
 class Coupon(models.Model):
 
@@ -174,9 +164,6 @@ class Coupon(models.Model):
         return self.code
 
 
-# ==========================================================
-# ORDER
-# ==========================================================
 
 class Order(models.Model):
 
@@ -208,7 +195,7 @@ class Order(models.Model):
         related_name="orders",
     )
 
-    # Preserve the applied code if the coupon is subsequently removed.
+
     coupon_code_snapshot = models.CharField(
         max_length=50,
         blank=True,
@@ -253,9 +240,7 @@ class Order(models.Model):
         return f"Order {self.order_number} ({self.status})"
 
 
-# ==========================================================
-# ORDER ITEM
-# ==========================================================
+#
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
@@ -264,14 +249,13 @@ class OrderItem(models.Model):
         related_name="items",
     )
 
-    # Retain product records referenced by historical purchases.
     product = models.ForeignKey(
         Product,
         on_delete=models.PROTECT,
         related_name="order_items",
     )
 
-    # Snapshots preserve what the customer purchased at that time.
+
     product_name_snapshot = models.CharField(max_length=200)
     product_sku_snapshot = models.CharField(max_length=64)
 
@@ -308,9 +292,7 @@ class OrderItem(models.Model):
         return f"{self.product_name_snapshot} x {self.quantity}"
 
 
-# ==========================================================
-# PAYMENT
-# ==========================================================
+
 
 class Payment(models.Model):
 
@@ -387,9 +369,7 @@ class Payment(models.Model):
         return f"Payment #{self.pk} - {self.status}"
 
 
-# ==========================================================
-# AUDIT LOG
-# ==========================================================
+
 
 class AuditLog(models.Model):
     # An audit record remains available if its actor is deleted.

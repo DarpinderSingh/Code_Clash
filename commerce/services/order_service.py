@@ -47,10 +47,6 @@ def list_customer_orders(customer):
 
 
 def get_order(order_id, *, customer=None):
-    """
-    Retrieve an order.
-    Pass customer to restrict access to that customer's orders.
-    """
     orders = (
         Order.objects.select_related("customer", "coupon")
         .prefetch_related("items", "payments")
@@ -72,13 +68,6 @@ def checkout(
     shipping_phone="",
     shipping_address="",
 ):
-    """
-    Convert the customer's cart into an order.
-
-    Inventory, order records, coupon usage and cart removal are
-    committed together. If an operation fails, the transaction
-    rolls back the database changes.
-    """
     _require_customer(customer)
 
     if coupon_code is not None and not isinstance(coupon_code, str):
@@ -102,8 +91,6 @@ def checkout(
     lines = []
     subtotal_paise = 0
 
-    # Decrease stock using the shared inventory service.
-    # Its guarded database update prevents selling unavailable stock.
     for cart_item in cart_items:
         product = decrease_stock(
             cart_item.product_id,
@@ -153,8 +140,6 @@ def checkout(
     order.full_clean()
     order.save()
 
-    # Store snapshots so later product price/name changes do not
-    # change the historical purchase details.
     OrderItem.objects.bulk_create([
         OrderItem(
             order=order,
@@ -168,7 +153,6 @@ def checkout(
         for line in lines
     ])
 
-    # Record coupon use inside the same checkout transaction.
     if coupon:
         record_coupon_use(coupon.pk)
 
@@ -201,12 +185,7 @@ def cancel_order(
     customer=None,
     reason="",
 ):
-    """
-    Cancel an order that has not shipped or been delivered.
 
-    If customer is supplied, the order must belong to that customer.
-    Paid or authorized payments must be refunded or voided first.
-    """
     orders = Order.objects.select_for_update()
 
     if customer is not None:
@@ -237,8 +216,6 @@ def cancel_order(
         Payment.Status.PARTIALLY_REFUNDED,
     ]
 
-    # INTENTIONAL CHALLENGE BUG:
-    # Checks failed payments instead of payments that block cancellation.
     if order.payments.filter(
             status=Payment.Status.FAILED
     ).exists():
@@ -248,12 +225,11 @@ def cancel_order(
         )
 
 
-    # Restore the stock originally deducted during checkout.
+
     for item in order.items.order_by("product_id"):
         increase_stock(item.product_id, item.quantity)
 
-    # Release one coupon use when the coupon still exists.
-    # The conditional update prevents a negative usage count.
+
     if order.coupon_id:
         Coupon.objects.filter(
             pk=order.coupon_id,

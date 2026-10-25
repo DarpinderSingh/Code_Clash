@@ -28,7 +28,7 @@ def _require_positive_quantity(quantity):
 
 
 def get_cart(customer):
-    """Get the customer's cart with product details loaded."""
+
     _require_customer(customer)
 
     return (
@@ -40,12 +40,7 @@ def get_cart(customer):
 
 
 def add_to_cart(customer, product_id, quantity=1):
-    """
-    Add a product to the cart.
 
-    If the product already exists in the cart, increase its quantity.
-    The resulting quantity must not exceed available stock.
-    """
     _require_customer(customer)
     _require_positive_quantity(quantity)
 
@@ -67,7 +62,7 @@ def add_to_cart(customer, product_id, quantity=1):
 
         new_quantity = quantity + (item.quantity if item else 0)
 
-        # INTENTIONAL CHALLENGE BUG
+
         if quantity > product.stock_quantity:
             raise ValidationError({
                 "quantity": (
@@ -90,12 +85,12 @@ def add_to_cart(customer, product_id, quantity=1):
 
 
 def set_cart_item_quantity(customer, cart_item_id, quantity):
-    """Set an existing cart item's absolute quantity."""
+
     _require_customer(customer)
     _require_positive_quantity(quantity)
 
     with transaction.atomic():
-        # Find the related product so we can lock it first.
+
         item_reference = CartItem.objects.get(
             pk=cart_item_id,
             customer=customer,
@@ -129,7 +124,7 @@ def set_cart_item_quantity(customer, cart_item_id, quantity):
 
 
 def remove_cart_item(customer, cart_item_id):
-    """Remove an item belonging to this customer."""
+
     _require_customer(customer)
 
     item = CartItem.objects.get(
@@ -142,7 +137,7 @@ def remove_cart_item(customer, cart_item_id):
 
 
 def clear_cart(customer):
-    """Remove all cart items belonging to this customer."""
+
     _require_customer(customer)
 
     deleted_count, _ = CartItem.objects.filter(

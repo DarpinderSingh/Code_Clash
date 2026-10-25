@@ -93,7 +93,6 @@ def calculate_discount_paise(coupon, subtotal_paise):
 
 
 def get_coupon_discount_paise(code, subtotal_paise, *, now=None):
-    """Validate a coupon and return its calculated discount."""
     coupon = validate_coupon(
         code,
         subtotal_paise,
@@ -104,12 +103,6 @@ def get_coupon_discount_paise(code, subtotal_paise, *, now=None):
 
 
 def record_coupon_use(coupon_id):
-    """
-    Atomically record a successful coupon use.
-
-    Call this inside the checkout transaction, after validating
-    the coupon and creating the order successfully.
-    """
     current_time = timezone.now()
 
     eligible_coupons = (

@@ -11,9 +11,6 @@ from commerce.models import (
 )
 
 
-# ==========================================================
-# PRODUCT SERIALIZERS
-# ==========================================================
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -36,9 +33,6 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
 
 
-# ==========================================================
-# CART SERIALIZERS
-# ==========================================================
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -64,9 +58,6 @@ class UpdateCartItemSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(min_value=1)
 
 
-# ==========================================================
-# COUPON SERIALIZERS
-# ==========================================================
 
 class CouponValidationSerializer(serializers.Serializer):
     code = serializers.CharField(
@@ -82,9 +73,6 @@ class CouponQuoteSerializer(serializers.Serializer):
     total_paise = serializers.IntegerField(min_value=0)
 
 
-# ==========================================================
-# ORDER ITEM SERIALIZER
-# ==========================================================
 
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -102,9 +90,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-# ==========================================================
-# PAYMENT SERIALIZER
-# ==========================================================
 
 class PaymentSerializer(serializers.ModelSerializer):
     order = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -153,9 +138,7 @@ class RefundPaymentSerializer(serializers.Serializer):
     )
 
 
-# ==========================================================
-# ORDER SERIALIZER
-# ==========================================================
+
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -220,11 +203,6 @@ class CancelOrderSerializer(serializers.Serializer):
         default="",
         max_length=1000,
     )
-
-
-# ==========================================================
-# AUDIT LOG SERIALIZER
-# ==========================================================
 
 class AuditLogSerializer(serializers.ModelSerializer):
     class Meta:

@@ -15,7 +15,7 @@ def _require_positive_integer(value, field_name="quantity"):
 
 
 def list_products(*, include_inactive=False):
-    """Return products available for listing."""
+
     products = Product.objects.all()
 
     if not include_inactive:
@@ -25,7 +25,7 @@ def list_products(*, include_inactive=False):
 
 
 def get_product(product_id, *, include_inactive=False):
-    """Retrieve a single product."""
+
     products = Product.objects.all()
 
     if not include_inactive:
@@ -43,7 +43,7 @@ def create_product(
     stock_quantity=0,
     is_active=True,
 ):
-    """Validate and create a product."""
+
     product = Product(
         name=name,
         sku=sku,
@@ -67,7 +67,7 @@ def create_product(
 
 
 def update_product(product_id, **changes):
-    """Update product details without directly changing stock."""
+
     allowed_fields = {
         "name",
         "sku",
@@ -111,7 +111,7 @@ def update_product(product_id, **changes):
 
 
 def decrease_stock(product_id, quantity):
-    """Decrease product stock after checking availability."""
+
     _require_positive_integer(quantity)
 
     with transaction.atomic():
@@ -127,8 +127,7 @@ def decrease_stock(product_id, quantity):
                 {"quantity": "Insufficient stock available."}
             )
 
-        # Intentionally faulty: reads and saves a potentially stale value.
-        # Concurrent checkout requests can overwrite each other's changes.
+
         product.stock_quantity -= quantity
         product.updated_at = timezone.now()
         product.save(update_fields=["stock_quantity", "updated_at"])

@@ -1,10 +1,4 @@
 
-/* =====================================================
-   FAULTLINE DJANGO CHALLENGE
-   Dark Navy + Spotify-Inspired Green Admin Theme
-   ===================================================== */
-
-/* Theme colors */
 
 :root {
     --faultline-navy: #0b1420;
@@ -21,9 +15,6 @@
     --faultline-border: #2b4055;
 }
 
-/* =====================================================
-   DASHBOARD LAYOUT
-   ===================================================== */
 
 .faultline-dashboard {
     width: 100%;
@@ -39,9 +30,6 @@
     letter-spacing: -0.3px;
 }
 
-/* =====================================================
-   HERO / HEADER
-   ===================================================== */
 
 .faultline-hero {
     position: relative;
@@ -104,9 +92,7 @@
     color: #d8fbe4 !important;
 }
 
-/* =====================================================
-   STORE OVERVIEW METRIC CARDS
-   ===================================================== */
+
 
 .faultline-metrics {
     display: grid;
@@ -162,9 +148,6 @@
     overflow-wrap: anywhere;
 }
 
-/* =====================================================
-   QUICK ACCESS LINKS
-   ===================================================== */
 
 .faultline-quicklinks {
     display: grid;
@@ -220,17 +203,12 @@
     outline-offset: 3px;
 }
 
-/* =====================================================
-   DJANGO APPLICATION MODULES
-   ===================================================== */
 
 .faultline-app-list {
     margin-top: 14px;
 }
 
-/* =====================================================
-   ORDER AND PAYMENT WORKFLOW NOTICES
-   ===================================================== */
+
 
 .faultline-admin-notice {
     margin-top: 24px;
@@ -257,9 +235,7 @@
     line-height: 1.8;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 
 @media (max-width: 768px) {
     .faultline-hero {
@@ -305,9 +281,7 @@
     }
 }
 
-/* =====================================================
-   REDUCED MOTION ACCESSIBILITY
-   ===================================================== */
+
 
 @media (prefers-reduced-motion: reduce) {
     .faultline-metric,

@@ -6,12 +6,7 @@ from commerce.models import Coupon, Order, Payment, Product
 
 
 def operations_dashboard(request):
-    """
-    Display a staff-only overview of commerce operations.
 
-    The URL will be wrapped with admin.site.admin_view(),
-    which enforces Django admin access permissions.
-    """
     context = admin.site.each_context(request)
 
     context.update({

@@ -2,10 +2,6 @@ from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class PublicReadOnly(BasePermission):
-    """
-    Allow anyone to read public resources.
-    Only staff users can perform write operations.
-    """
 
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS:
@@ -40,12 +36,6 @@ class IsAuthenticatedCustomer(BasePermission):
 
 
 class IsOwnerOrStaff(BasePermission):
-    """
-    Allow customers to access their own objects.
-    Staff users may access objects for administrative purposes.
-
-    Supports CartItem, Order, OrderItem, and Payment objects.
-    """
 
     def has_permission(self, request, view):
         return bool(
@@ -62,14 +52,14 @@ class IsOwnerOrStaff(BasePermission):
         if user.is_staff:
             return True
 
-        # Objects that directly belong to a customer.
+
         customer_id = getattr(obj, "customer_id", None)
 
         if customer_id is not None:
             return customer_id == user.pk
 
-        # Objects associated with an order, such as a payment
-        # or an order item.
+
+
         order = getattr(obj, "order", None)
 
         if order is not None:

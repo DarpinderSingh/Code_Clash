@@ -21,9 +21,7 @@ from commerce.services.payment_service import (
 )
 
 
-# ==========================================================
-# PRODUCT ADMIN
-# ==========================================================
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -47,9 +45,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-# ==========================================================
-# CART ADMIN
-# ==========================================================
+
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
@@ -74,9 +70,7 @@ class CartItemAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-# ==========================================================
-# COUPON ADMIN
-# ==========================================================
+
 
 @admin.register(Coupon)
 class CouponAdmin(admin.ModelAdmin):
@@ -99,9 +93,7 @@ class CouponAdmin(admin.ModelAdmin):
     list_per_page = 25
 
 
-# ==========================================================
-# ORDER ITEM INLINE
-# ==========================================================
+
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -126,9 +118,7 @@ class OrderItemInline(admin.TabularInline):
         return False
 
 
-# ==========================================================
-# PAYMENT INLINE
-# ==========================================================
+
 
 class PaymentInline(admin.TabularInline):
     model = Payment
@@ -152,9 +142,7 @@ class PaymentInline(admin.TabularInline):
         return False
 
 
-# ==========================================================
-# ORDER ADMIN
-# ==========================================================
+
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
@@ -181,7 +169,7 @@ class OrderAdmin(admin.ModelAdmin):
     actions = ("cancel_selected_orders",)
     list_per_page = 25
 
-    # Status and financial totals must be changed through services.
+
     readonly_fields = (
         "order_number",
         "customer",
@@ -233,10 +221,6 @@ class OrderAdmin(admin.ModelAdmin):
                 level=messages.WARNING,
             )
 
-
-# ==========================================================
-# PAYMENT ADMIN
-# ==========================================================
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
@@ -396,9 +380,7 @@ class PaymentAdmin(admin.ModelAdmin):
             )
 
 
-# ==========================================================
-# AUDIT LOG ADMIN
-# ==========================================================
+
 
 @admin.register(AuditLog)
 class AuditLogAdmin(admin.ModelAdmin):

@@ -66,12 +66,7 @@ def create_payment(
     amount_paise=None,
     actor=None,
 ):
-    """
-    Create a mock payment for a pending order.
 
-    This creates a local payment record only. It does not charge
-    a bank account, UPI ID, card, or real payment provider.
-    """
     order = Order.objects.select_for_update().get(pk=order_id)
 
     if order.status != Order.Status.PENDING:
@@ -139,19 +134,13 @@ def confirm_payment(
     transaction_reference,
     actor=None,
 ):
-    """
-    Confirm a pending payment and mark its order as confirmed.
 
-    transaction_reference must come from the trusted payment
-    workflow. This function does not verify an external transaction.
-    """
     transaction_reference = _require_reference(
         transaction_reference,
         "transaction_reference",
     )
 
-    # Lock the order before the payment to keep a consistent
-    # lock ordering across payment operations.
+
     payment_reference = Payment.objects.only("order_id").get(
         pk=payment_id
     )
@@ -165,7 +154,7 @@ def confirm_payment(
         order=order,
     )
 
-    # Permit safe retries of the same successful operation.
+
     if payment.status == Payment.Status.PAID:
         if payment.transaction_reference == transaction_reference:
             return payment
@@ -277,12 +266,7 @@ def refund_payment(
     amount_paise=None,
     actor=None,
 ):
-    """
-    Record a full or partial refund in the local application.
 
-    This records refund state; it does not send money through
-    an external payment provider.
-    """
     refund_reference = _require_reference(
         refund_reference,
         "refund_reference",
