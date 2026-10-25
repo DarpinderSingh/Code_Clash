@@ -1,0 +1,322 @@
+
+/* =====================================================
+   FAULTLINE DJANGO CHALLENGE
+   Dark Navy + Spotify-Inspired Green Admin Theme
+   ===================================================== */
+
+/* Theme colors */
+
+:root {
+    --faultline-navy: #0b1420;
+    --faultline-navy-light: #132337;
+    --faultline-surface: #17283b;
+    --faultline-surface-hover: #20364c;
+
+    --faultline-green: #1ed760;
+    --faultline-green-hover: #35e875;
+    --faultline-green-dark: #137a3a;
+
+    --faultline-text: #f1f5f9;
+    --faultline-muted: #a7b5c6;
+    --faultline-border: #2b4055;
+}
+
+/* =====================================================
+   DASHBOARD LAYOUT
+   ===================================================== */
+
+.faultline-dashboard {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.faultline-section-title {
+    margin: 32px 0 16px;
+    color: var(--body-fg, var(--faultline-text));
+    font-size: 20px;
+    font-weight: 750;
+    letter-spacing: -0.3px;
+}
+
+/* =====================================================
+   HERO / HEADER
+   ===================================================== */
+
+.faultline-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 36px;
+    margin: 0 0 30px;
+
+    border: 1px solid var(--faultline-border);
+    border-radius: 16px;
+
+    background:
+        radial-gradient(
+            circle at 95% 5%,
+            rgba(30, 215, 96, 0.18),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            var(--faultline-navy),
+            var(--faultline-navy-light)
+        );
+
+    color: var(--faultline-text);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+}
+
+.faultline-hero h1 {
+    margin: 12px 0 16px;
+    color: #ffffff;
+    font-size: clamp(26px, 3vw, 38px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.8px;
+}
+
+.faultline-hero p {
+    max-width: 780px;
+    color: #d0dbe7;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.faultline-eyebrow {
+    color: var(--faultline-green) !important;
+    font-size: 12px !important;
+    font-weight: 800;
+    letter-spacing: 2.4px;
+    text-transform: uppercase;
+}
+
+.faultline-notice {
+    margin-top: 22px;
+    padding: 14px 18px;
+
+    border: 1px solid rgba(30, 215, 96, 0.25);
+    border-left: 4px solid var(--faultline-green);
+    border-radius: 8px;
+
+    background: rgba(30, 215, 96, 0.07);
+    color: #d8fbe4 !important;
+}
+
+/* =====================================================
+   STORE OVERVIEW METRIC CARDS
+   ===================================================== */
+
+.faultline-metrics {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(165px, 1fr)
+    );
+
+    gap: 16px;
+    margin: 18px 0 30px;
+}
+
+.faultline-metric {
+    min-width: 0;
+    padding: 22px;
+
+    border: 1px solid var(--faultline-border);
+    border-radius: 13px;
+
+    background: var(--faultline-navy-light);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+
+    transition:
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.faultline-metric:hover {
+    border-color: rgba(30, 215, 96, 0.6);
+    background: var(--faultline-surface-hover);
+    transform: translateY(-3px);
+}
+
+.faultline-metric span {
+    display: block;
+    margin-bottom: 13px;
+
+    color: var(--faultline-muted);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.faultline-metric strong {
+    display: block;
+
+    color: var(--faultline-green);
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.2;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   QUICK ACCESS LINKS
+   ===================================================== */
+
+.faultline-quicklinks {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(190px, 1fr)
+    );
+
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.faultline-quicklinks a {
+    display: flex;
+    align-items: center;
+
+    min-height: 66px;
+    padding: 18px;
+
+    border: 1px solid var(--faultline-border);
+    border-radius: 12px;
+
+    background: var(--faultline-navy-light);
+    color: var(--faultline-text);
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+
+    transition:
+        color 0.18s ease,
+        border-color 0.18s ease,
+        background-color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.faultline-quicklinks a:hover {
+    border-color: var(--faultline-green);
+    background: var(--faultline-surface-hover);
+
+    color: var(--faultline-green);
+    text-decoration: none;
+
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(0, 0, 0, 0.12);
+}
+
+.faultline-quicklinks a:focus-visible {
+    outline: 3px solid var(--faultline-green);
+    outline-offset: 3px;
+}
+
+/* =====================================================
+   DJANGO APPLICATION MODULES
+   ===================================================== */
+
+.faultline-app-list {
+    margin-top: 14px;
+}
+
+/* =====================================================
+   ORDER AND PAYMENT WORKFLOW NOTICES
+   ===================================================== */
+
+.faultline-admin-notice {
+    margin-top: 24px;
+    padding: 22px;
+
+    border: 1px solid var(--faultline-border);
+    border-left: 4px solid var(--faultline-green);
+    border-radius: 12px;
+
+    background: var(--faultline-navy-light);
+    color: var(--faultline-text);
+}
+
+.faultline-admin-notice h2 {
+    margin-top: 0;
+    color: var(--faultline-green);
+    font-size: 19px;
+    font-weight: 750;
+}
+
+.faultline-admin-notice p {
+    color: #d0dbe7;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+
+@media (max-width: 768px) {
+    .faultline-hero {
+        padding: 26px;
+    }
+
+    .faultline-hero h1 {
+        font-size: 28px;
+    }
+
+    .faultline-metrics {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(140px, 1fr)
+        );
+        gap: 12px;
+    }
+
+    .faultline-metric {
+        padding: 17px;
+    }
+
+    .faultline-quicklinks {
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(155px, 1fr)
+        );
+    }
+}
+
+@media (max-width: 480px) {
+    .faultline-hero {
+        padding: 20px;
+    }
+
+    .faultline-hero h1 {
+        font-size: 24px;
+    }
+
+    .faultline-metrics,
+    .faultline-quicklinks {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =====================================================
+   REDUCED MOTION ACCESSIBILITY
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .faultline-metric,
+    .faultline-quicklinks a {
+        transition: none;
+    }
+
+    .faultline-metric:hover,
+    .faultline-quicklinks a:hover {
+        transform: none;
+    }
+}

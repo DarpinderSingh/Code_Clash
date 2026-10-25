@@ -1,0 +1,29 @@
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "faultline-django-challenge"
+version = "0.1.0"
+description = "A Django commerce API and debugging challenge for a college hackathon"
+requires-python = ">=3.12"
+dependencies = [
+    "Django>=5.2.8,<5.3",
+    "djangorestframework>=3.16,<4",
+    "python-dotenv>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+    "pytest-django>=4.11,<5",
+]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+addopts = "-ra"
+
+[tool.setuptools.packages.find]
+include = ["config*", "commerce*"]

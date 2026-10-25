@@ -1,0 +1,123 @@
+
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin_custom.css' %}">
+{% endblock %}
+
+{% block bodyclass %}
+    {{ block.super }} dashboard faultline-dashboard-page
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main" class="faultline-dashboard">
+
+    <!-- Dashboard header -->
+    <section class="faultline-hero">
+        <p class="faultline-eyebrow">FAULTLINE DJANGO CHALLENGE</p>
+
+        <h1>Commerce Operations</h1>
+
+        <p>
+            Manage your product catalog, shopping carts, coupons,
+            customer orders, and mock payments.
+        </p>
+
+        <p class="faultline-notice">
+            Development challenge: all payment operations are simulated.
+            No real money is transferred.
+        </p>
+    </section>
+
+    <!-- Store metrics -->
+    {% if faultline_metrics %}
+        <h2 class="faultline-section-title">Store overview</h2>
+
+        <section class="faultline-metrics">
+
+            <div class="faultline-metric">
+                <span>Total products</span>
+                <strong>{{ faultline_metrics.products_total }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Active products</span>
+                <strong>{{ faultline_metrics.active_products }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Total orders</span>
+                <strong>{{ faultline_metrics.orders_total }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Pending orders</span>
+                <strong>{{ faultline_metrics.pending_orders }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Pending payments</span>
+                <strong>{{ faultline_metrics.pending_payments }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Paid payments</span>
+                <strong>{{ faultline_metrics.paid_payments }}</strong>
+            </div>
+
+            <div class="faultline-metric">
+                <span>Active coupons</span>
+                <strong>{{ faultline_metrics.active_coupons }}</strong>
+            </div>
+
+        </section>
+    {% endif %}
+
+    <!-- Quick access links -->
+    <h2 class="faultline-section-title">Quick access</h2>
+
+    <section class="faultline-quicklinks">
+
+        <a href="{% url 'commerce-admin-operations' %}">
+            Operations overview
+        </a>
+
+        <a href="{% url 'admin:commerce_product_changelist' %}">
+            Manage products
+        </a>
+
+        <a href="{% url 'admin:commerce_cartitem_changelist' %}">
+            View carts
+        </a>
+
+        <a href="{% url 'admin:commerce_coupon_changelist' %}">
+            Manage coupons
+        </a>
+
+        <a href="{% url 'admin:commerce_order_changelist' %}">
+            Manage orders
+        </a>
+
+        <a href="{% url 'admin:commerce_payment_changelist' %}">
+            View mock payments
+        </a>
+
+        <a href="{% url 'admin:commerce_auditlog_changelist' %}">
+            View audit logs
+        </a>
+
+    </section>
+
+    <!-- Django's registered application modules -->
+    <h2 class="faultline-section-title">Application modules</h2>
+
+    <div class="faultline-app-list">
+        {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+    </div>
+
+</div>
+{% endblock %}

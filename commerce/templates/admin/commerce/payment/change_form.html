@@ -1,0 +1,24 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin_custom.css' %}">
+{% endblock %}
+
+{% block after_related_objects %}
+    {{ block.super }}
+
+    <div class="faultline-admin-notice">
+        <h2>Mock payment workflow</h2>
+        <p>
+            Use the actions on the Payments list to confirm, fail,
+            or refund eligible mock payments.
+        </p>
+        <p>
+            These actions update local application records only.
+            They do not connect to a payment gateway or transfer money.
+        </p>
+    </div>
+{% endblock %}
+

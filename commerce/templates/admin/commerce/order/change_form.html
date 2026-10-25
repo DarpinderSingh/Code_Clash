@@ -1,0 +1,25 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'admin_custom.css' %}">
+{% endblock %}
+
+{% block after_related_objects %}
+    {{ block.super }}
+
+    <div class="faultline-admin-notice">
+        <h2>Order workflow</h2>
+        <p>
+            Use the cancellation action on the Orders list to cancel
+            eligible orders. The business service restores inventory
+            and records an audit event.
+        </p>
+        <p>
+            Orders with active paid or authorized payments cannot be
+            cancelled until the relevant payment workflow is resolved.
+        </p>
+    </div>
+{% endblock %}
+
