@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}{% if coupon and coupon.id %}Edit Coupon{% else %}New Coupon{% endif %} - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>{% if coupon and coupon.id %}Edit Coupon #{{ coupon.id }}{% else %}Create New Coupon{% endif %}</h1>
+</div>
+
+{% if error %}
+<div class="alert alert-error" data-testid="coupon-error">{{ error }}</div>
+{% endif %}
+
+<div class="card form-card">
+  <form method="POST" action="{% if coupon and coupon.id %}/admin/coupons/{{ coupon.id }}/edit{% else %}/admin/coupons/new{% endif %}" data-testid="coupon-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    
+    <div class="form-group">
+      <label for="code">Coupon Code</label>
+      <input type="text" id="code" name="code" value="{{ coupon.code if coupon else '' }}" required placeholder="e.g. SAVE20">
+    </div>
+
+    <div class="form-group">
+      <label for="percent_off">Discount Percentage (0 - 100)</label>
+      <input type="number" id="percent_off" name="percent_off" value="{{ coupon.percent_off if coupon else '' }}" required min="0" max="100" placeholder="e.g. 20">
+    </div>
+
+    <div class="form-group">
+      <label for="expires_at">Expiration Date (UTC)</label>
+      <input type="text" id="expires_at" name="expires_at" value="{{ coupon.expires_at.strftime('%Y-%m-%dT%H:%M:%SZ') if (coupon and coupon.expires_at and coupon.expires_at.strftime is defined) else (coupon.expires_at if coupon else '2026-11-01T00:00:00Z') }}" required placeholder="2026-11-01T00:00:00Z">
+      <small>Format: ISO-8601 (e.g. 2026-11-01T00:00:00Z)</small>
+    </div>
+
+    <div class="form-group-checkbox">
+      <label>
+        <input type="checkbox" name="active" value="true" {% if not coupon or coupon.active %}checked{% endif %}>
+        Active
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" data-testid="coupon-save">Save Coupon</button>
+      <a href="/admin/coupons" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

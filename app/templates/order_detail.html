@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Order #{{ order.id }} - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header flex-between">
+  <h1>Order #{{ order.id }}</h1>
+  <div>
+    <a href="/admin/orders" class="btn btn-secondary">&larr; Back to Orders</a>
+  </div>
+</div>
+
+{% if message %}
+<div class="alert alert-success">{{ message }}</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<div class="grid-2">
+  <div class="card">
+    <h2>Order Information</h2>
+    <table class="detail-table">
+      <tr>
+        <th>Status:</th>
+        <td><strong class="badge" data-testid="order-status">{{ order.status }}</strong></td>
+      </tr>
+      <tr>
+        <th>Customer:</th>
+        <td data-testid="order-owner">{{ order.user.email if order.user else order.user_id }}</td>
+      </tr>
+      <tr>
+        <th>Created At (UTC):</th>
+        <td>{{ order.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') if order.created_at else '' }}</td>
+      </tr>
+      <tr>
+        <th>Coupon Code:</th>
+        <td>{{ order.coupon.code if order.coupon else 'None' }}</td>
+      </tr>
+      <tr>
+        <th>Subtotal:</th>
+        <td>{{ order.subtotal_paise }} paise</td>
+      </tr>
+      <tr>
+        <th>Discount:</th>
+        <td>{{ order.discount_paise }} paise</td>
+      </tr>
+      <tr>
+        <th>Total Amount:</th>
+        <td><strong data-testid="order-total">{{ order.total_paise }}</strong> paise</td>
+      </tr>
+    </table>
+
+    <div class="actions-panel" style="margin-top: 1.5rem;">
+      {% if order.status == 'PENDING' %}
+      <form method="POST" action="/admin/orders/{{ order.id }}/cancel" style="display:inline-block;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <button type="submit" class="btn btn-danger" data-testid="order-cancel" onclick="return confirm('Cancel this order? Stock will be restored.');">
+          Cancel Order
+        </button>
+      </form>
+
+      <form method="POST" action="/admin/payments/confirm" style="display:inline-block; margin-left: 0.5rem;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <button type="submit" class="btn btn-success" data-testid="payment-confirm">
+          Confirm Payment
+        </button>
+      </form>
+      {% elif order.status == 'PAID' %}
+      <form method="POST" action="/admin/payments/refund" style="display:inline-block;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="order_id" value="{{ order.id }}">
+        <button type="submit" class="btn btn-warning" data-testid="payment-refund" onclick="return confirm('Refund this paid order?');">
+          Refund Order
+        </button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Purchased Items</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Product Name</th>
+          <th>Unit Price</th>
+          <th>Qty</th>
+          <th>Line Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items %}
+        <tr>
+          <td><strong>{{ item.product.sku if item.product else item.product_id }}</strong></td>
+          <td>{{ item.product.name if item.product else 'Unknown' }}</td>
+          <td>{{ item.unit_price_paise }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unit_price_paise * item.quantity }} paise</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {% if payment %}
+    <h2 style="margin-top: 1.5rem;">Payment Record</h2>
+    <table class="detail-table">
+      <tr>
+        <th>Payment ID:</th>
+        <td><a href="/admin/payments/{{ payment.id }}">#{{ payment.id }}</a></td>
+      </tr>
+      <tr>
+        <th>Payment Status:</th>
+        <td><span class="badge" data-testid="payment-status">{{ payment.status }}</span></td>
+      </tr>
+      <tr>
+        <th>Idempotency Key:</th>
+        <td><code>{{ payment.idempotency_key }}</code></td>
+      </tr>
+      <tr>
+        <th>Amount Paid:</th>
+        <td>{{ payment.amount_paise }} paise</td>
+      </tr>
+      <tr>
+        <th>Refunded:</th>
+        <td><span data-testid="refund-amount">{{ payment.refunded_paise }}</span> paise</td>
+      </tr>
+    </table>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

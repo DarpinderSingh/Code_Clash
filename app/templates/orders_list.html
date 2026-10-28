@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Orders - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Orders</h1>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Customer</th>
+      <th>Status</th>
+      <th>Subtotal (paise)</th>
+      <th>Discount (paise)</th>
+      <th>Total (paise)</th>
+      <th>Created At (UTC)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in orders %}
+    <tr data-testid="order-row-{{ o.id }}">
+      <td><strong>#{{ o.id }}</strong></td>
+      <td>{{ o.user.email if o.user else o.user_id }}</td>
+      <td>
+        {% if o.status == 'PAID' %}
+        <span class="badge badge-success">{{ o.status }}</span>
+        {% elif o.status == 'PENDING' %}
+        <span class="badge badge-warning">{{ o.status }}</span>
+        {% elif o.status == 'CANCELLED' %}
+        <span class="badge badge-danger">{{ o.status }}</span>
+        {% elif o.status == 'REFUNDED' %}
+        <span class="badge badge-info">{{ o.status }}</span>
+        {% else %}
+        <span class="badge">{{ o.status }}</span>
+        {% endif %}
+      </td>
+      <td>{{ o.subtotal_paise }}</td>
+      <td>{{ o.discount_paise }}</td>
+      <td><strong>{{ o.total_paise }}</strong></td>
+      <td>{{ o.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') if o.created_at else '' }}</td>
+      <td>
+        <a href="/admin/orders/{{ o.id }}" class="btn btn-small">Details</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="8" class="text-center">No orders found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

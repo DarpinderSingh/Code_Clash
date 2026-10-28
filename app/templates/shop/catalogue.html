@@ -1,0 +1,5 @@
+{% extends "shop/base.html" %}{% block title %}Products · FaultLine{% endblock %}
+{% block content %}<section class="hero"><p class="eyebrow">CUSTOMER DEMO</p><h1>Shop the catalogue</h1><p>Try the cart, checkout and order journey. Payments are simulated.</p></section>
+{% if error %}<p class="alert" role="alert">{{ error }}</p>{% endif %}{% if message %}<p class="notice">{{ message }}</p>{% endif %}
+<div class="grid">{% for product in products %}<article class="card" data-testid="shop-product-{{ product.sku }}"><p class="eyebrow">{{ product.sku }}</p><h2>{{ product.name }}</h2><p class="price">₹{{ '%.2f'|format(product.price_paise / 100) }}</p><p>{{ product.stock }} in stock</p>
+{% if current_user %}<form method="post" action="/shop/cart/add"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="product_id" value="{{ product.id }}"><label>Quantity <input type="number" name="quantity" min="1" value="1" required></label><button type="submit">Add to cart</button></form>{% else %}<a class="button" href="/shop/login">Sign in to shop</a>{% endif %}</article>{% else %}<p>No products available.</p>{% endfor %}</div>{% endblock %}

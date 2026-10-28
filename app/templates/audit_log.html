@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Audit Log - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Audit Log</h1>
+</div>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th>Log ID</th>
+      <th>Actor</th>
+      <th>Action</th>
+      <th>Entity</th>
+      <th>Entity ID</th>
+      <th>Timestamp (UTC)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for entry in entries %}
+    <tr data-testid="audit-row">
+      <td>#{{ entry.id }}</td>
+      <td>User #{{ entry.actor_id if entry.actor_id else 'System' }}</td>
+      <td><strong>{{ entry.action }}</strong></td>
+      <td>{{ entry.entity }}</td>
+      <td>{{ entry.entity_id if entry.entity_id else '-' }}</td>
+      <td>{{ entry.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') if entry.timestamp else '' }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="text-center">No audit entries recorded yet.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

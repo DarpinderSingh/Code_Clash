@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}FaultLine Shop{% endblock %}</title>
+  <link rel="stylesheet" href="/static/shop.css">
+</head>
+<body>
+  <header><div class="wrap bar"><a class="brand" href="/shop">FaultLine <span>Shop</span></a>
+    <nav aria-label="Customer navigation"><a href="/shop">Products</a><a href="/shop/cart">Cart</a><a href="/shop/orders">Orders</a>
+    {% if current_user %}<span>{{ current_user.email }}</span><form method="post" action="/shop/logout"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button>Sign out</button></form>
+    {% else %}<a href="/shop/login">Customer sign in</a>{% endif %}<a href="/admin">Admin</a></nav></div></header>
+  <main class="wrap">{% block content %}{% endblock %}</main>
+</body></html>

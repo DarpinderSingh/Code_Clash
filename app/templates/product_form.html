@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{% if product and product.id %}Edit Product{% else %}New Product{% endif %} - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>{% if product and product.id %}Edit Product #{{ product.id }}{% else %}Create New Product{% endif %}</h1>
+</div>
+
+{% if error %}
+<div class="alert alert-error" data-testid="product-error">{{ error }}</div>
+{% endif %}
+
+<div class="card form-card">
+  <form method="POST" action="{% if product and product.id %}/admin/products/{{ product.id }}/edit{% else %}/admin/products/new{% endif %}" data-testid="product-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    
+    <div class="form-group">
+      <label for="sku">SKU</label>
+      <input type="text" id="sku" name="sku" value="{{ product.sku if product else '' }}" required placeholder="e.g. SKU-101">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Product Name</label>
+      <input type="text" id="name" name="name" value="{{ product.name if product else '' }}" required placeholder="e.g. Mechanical Keyboard">
+    </div>
+
+    <div class="form-group">
+      <label for="price_paise">Price (in paise)</label>
+      <input type="number" id="price_paise" name="price_paise" value="{{ product.price_paise if product else '' }}" required min="0" placeholder="e.g. 50000">
+      <small>50000 paise = 500.00 INR</small>
+    </div>
+
+    <div class="form-group">
+      <label for="stock">Stock Quantity</label>
+      <input type="number" id="stock" name="stock" value="{{ product.stock if product else '' }}" required placeholder="e.g. 10">
+    </div>
+
+    <div class="form-group-checkbox">
+      <label>
+        <input type="checkbox" name="active" value="true" {% if not product or product.active %}checked{% endif %}>
+        Active (Available for purchase)
+      </label>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" data-testid="product-save">Save Product</button>
+      <a href="/admin/products" class="btn btn-secondary">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

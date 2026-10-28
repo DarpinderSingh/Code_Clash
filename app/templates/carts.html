@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Cart Viewer - FaultLine Commerce Admin{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Cart Viewer</h1>
+</div>
+
+<div class="filter-bar">
+  <form method="GET" action="/admin/carts" class="user-select-form">
+    <label for="user-select"><strong>Select Demo User:</strong></label>
+    <select id="user-select" name="user_id" onchange="this.form.submit()" data-testid="cart-user-select">
+      {% for u in users %}
+      <option value="{{ u.id }}" {% if selected_user and selected_user.id == u.id %}selected{% endif %}>
+        #{{ u.id }} - {{ u.email }} ({{ u.role }})
+      </option>
+      {% endfor %}
+    </select>
+    <noscript><button type="submit" class="btn btn-secondary">View</button></noscript>
+  </form>
+</div>
+
+{% if selected_user %}
+<div class="card">
+  <h2>Cart for {{ selected_user.email }}</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Product SKU</th>
+        <th>Product Name</th>
+        <th>Unit Price (paise)</th>
+        <th>Quantity</th>
+        <th>Line Total (paise)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_snapshot['items'] %}
+      <tr>
+        <td><strong>{{ item.product_sku }}</strong></td>
+        <td>{{ item.product_name }}</td>
+        <td>{{ item.price_paise }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.item_total_paise }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="5" class="text-center">Cart is empty.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="cart-summary flex-between" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 2px solid #e2e8f0;">
+    <div><strong>Total Items:</strong> {{ cart_snapshot['items'] | length }}</div>
+    <div style="font-size: 1.25rem;">
+      <strong>Cart Total: </strong>
+      <span class="badge badge-info" data-testid="cart-total">{{ cart_snapshot.total_paise }}</span> paise
+    </div>
+  </div>
+
+</div>
+{% endif %}
+{% endblock %}
